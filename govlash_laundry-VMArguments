@@ -1,0 +1,5 @@
+--module-path "YOUR JAVAFX LIBRARY DIRECTORY (/Lib)"
+--add-modules javafx.controls,javafx.fxml
+
+//IMPORTANT NOTES!!!
+//This arguments is for VM Arguments which for running the java apps. Set the Run Configurations by pasting this on VM Arguments options
