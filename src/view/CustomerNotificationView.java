@@ -96,7 +96,7 @@ public class CustomerNotificationView extends BorderPane implements EventHandler
         
         // Read Status column
         TableColumn<Notification, Boolean> readCol = new TableColumn<>("Read");
-        readCol.setCellValueFactory(new PropertyValueFactory<>("isRead"));
+        readCol.setCellValueFactory(new PropertyValueFactory<>("read"));
                 
         table.getColumns().add(idCol);
         table.getColumns().add(timeCol);

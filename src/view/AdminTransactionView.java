@@ -72,7 +72,7 @@ public class AdminTransactionView extends BorderPane implements EventHandler<Act
 
         // Initialize gilter Buttons 
         showAllBtn = new ToggleButton("Show All");
-        showFinishedBtn = new ToggleButton("Show Finished Only");
+        showFinishedBtn = new ToggleButton("Show Finished");
         
         // Group toggle button so only one is active at a time
         filterGroup = new ToggleGroup();
