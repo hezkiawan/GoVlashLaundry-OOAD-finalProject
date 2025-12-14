@@ -24,29 +24,27 @@ public class UserController {
     }
 
     // REGISTER / ADD USER
-    // Validates inputs based on Source 16, 20, 30, 33
     public String register(String name, String email, String password, String confirmPass, String gender, LocalDate dobLocal, String role) {
         
-        // 1. Check Empty Fields (General)
+        // 1. Check empty fields
         if (name.isEmpty() || email.isEmpty() || password.isEmpty() || gender == null || dobLocal == null) {
             return "All fields must be filled.";
         }
 
-        // 2. Validate Password (Source 20, 33: "Must at least 6 characters long")
+        // 2. Validate password (must at least 6 characters long)
         if (password.length() < 6) {
             return "Password must be at least 6 characters long.";
         }
         
-        // 3. Validate Confirm Password (Source 20, 33: "Must be equal to the password")
+        // 3. Validate confirm password (must be equal to the password)
         if (!password.equals(confirmPass)) {
             return "Confirm Password must match Password.";
         }
 
-        // 4. Validate Email Suffix (Source 16: Employee ends with @govlash.com, Source 33: Customer ends with @email.com)
+        // 4. Validate email suffix (employee ends with @govlash.com, customer ends with @email.com)
         if (role.equals("Customer")) {
             if (!email.endsWith("@email.com")) return "Customer email must end with '@email.com'.";
         } else {
-            // It is an employee
             if (!email.endsWith("@govlash.com")) return "Employee email must end with '@govlash.com'.";
         }
         
@@ -62,9 +60,9 @@ public class UserController {
 
 
 
-        // 5. Validate Age
-        // Source 20: Employee > 17 years old
-        // Source 33: Customer > 12 years old
+        // 5. Validate age
+        // Employee > 17 years old
+        // Customer > 12 years old
         int age = Period.between(dobLocal, LocalDate.now()).getYears();
         
         if (role.equals("Customer")) {
@@ -72,11 +70,9 @@ public class UserController {
         } else {
             if (age < 17) return "Employee must be at least 17 years old.";
         }
-
-        // 6. Validate Unique Username/Email?
-        // Usually handled by DB constraint (SQLException), but we can try to register:
         
-        Date dob = Date.valueOf(dobLocal); // Convert LocalDate to SQL Date
+     // Convert localDate to SQL date
+        Date dob = Date.valueOf(dobLocal); 
         
         User newUser;
         switch(role) {

@@ -69,14 +69,14 @@ public class RegisterPage implements EventHandler<ActionEvent> {
         passField = new PasswordField();
         confPassField = new PasswordField();
         
-        // Gender using Radio Buttons
+        // Gender using radio buttons
         maleRb = new RadioButton("Male");
         femaleRb = new RadioButton("Female");
         genderGroup = new ToggleGroup();
         maleRb.setToggleGroup(genderGroup);
         femaleRb.setToggleGroup(genderGroup);
         
-        // Date Picker
+        // Date picker
         dobPicker = new DatePicker();
         
         registerBtn = new Button("Register");
@@ -85,7 +85,7 @@ public class RegisterPage implements EventHandler<ActionEvent> {
         backBtn = new Button("Back to Login");
         backBtn.setOnAction(this);
         
-        alert = new Alert(AlertType.NONE); // Type set dynamically later
+        alert = new Alert(AlertType.NONE); 
         
         scene = new Scene(bp, 500, 600);
     }
@@ -146,12 +146,12 @@ public class RegisterPage implements EventHandler<ActionEvent> {
         String confPass = confPassField.getText();
         LocalDate dob = dobPicker.getValue();
         
-        // Get Gender
+        // Get gender
         String gender = null;
         if (maleRb.isSelected()) gender = "Male";
         else if (femaleRb.isSelected()) gender = "Female";
         
-        // Call Controller with "Customer" hardcoded as per Source 33
+        // Register customer
         String result = userController.register(name, email, pass, confPass, gender, dob, "Customer");
         
         if (result.equals("Success")) {
@@ -163,7 +163,7 @@ public class RegisterPage implements EventHandler<ActionEvent> {
             Main.setScene(new LoginPage().getScene());
         } else {
             alert.setAlertType(AlertType.ERROR);
-            alert.setContentText(result); // Show the specific validation error
+            alert.setContentText(result);
             alert.show();
         }
     }

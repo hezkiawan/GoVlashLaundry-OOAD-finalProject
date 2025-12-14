@@ -19,7 +19,7 @@ public class Main extends Application{
 		stage = primaryStage;
         stage.setTitle("GoVlash Laundry System");
         
-        // Start with Login Page
+        // Start  Login Page
         setScene(new LoginPage().getScene());
         stage.show();	
 	}

@@ -21,20 +21,25 @@ public class DashboardPage implements EventHandler<ActionEvent> {
     private VBox sidebar;
     private Label welcomeLbl;
     
-    // Navigation Buttons
-    private Button homeBtn, logoutBtn;
+    // Navigation buttons
+    private Button logoutBtn;
     
-    // Role-Specific Buttons
-    private Button manageServiceBtn; // Admin
-    private Button manageEmployeeBtn; // Admin
-    private Button viewTransBtn;      // Admin (View Transactions & Send Notif)
+    // Role specific buttons
+    // admin
+    private Button manageServiceBtn; 
+    private Button manageEmployeeBtn; 
+    private Button viewTransBtn;      
     
-    private Button viewServicesBtn;    // Customer (Buy)
-    private Button myHistoryBtn;       // Customer
-    private Button myNotificationsBtn; // Customer
+    // Customer
+    private Button viewServicesBtn;    
+    private Button myHistoryBtn;       
+    private Button myNotificationsBtn; 
     
-    private Button pendingTransBtn;    // Receptionist
-    private Button myTasksBtn;         // Laundry Staff
+    // Receptionist
+    private Button pendingTransBtn; 
+    
+    // Laundry staff
+    private Button myTasksBtn;
     
     // Current User
     private User currentUser;
@@ -44,37 +49,36 @@ public class DashboardPage implements EventHandler<ActionEvent> {
         initComp();
         initPos();
         setupSidebarByRole();
+        loadDefaultView();
     }
 
     private void initComp() {
         bp = new BorderPane();
-        sidebar = new VBox(10); // Spacing 10
+        sidebar = new VBox(10);
         
         welcomeLbl = new Label("Welcome, " + currentUser.getName());
         welcomeLbl.setStyle("-fx-font-weight: bold; -fx-text-fill: white; -fx-font-size: 14px;");
         
-        // Common Buttons
-        homeBtn = new Button("Home");
-        logoutBtn = new Button("Logout");
+        // Common buttons
+        logoutBtn = new Button("Log Out");
         
-        // Admin Buttons
+        // Admin buttons
         manageServiceBtn = new Button("Manage Services");
         manageEmployeeBtn = new Button("Manage Employees");
-        viewTransBtn = new Button("View Transactions"); // New Button
+        viewTransBtn = new Button("View Transactions"); 
         
-        // Customer Buttons
+        // Customer buttons
         viewServicesBtn = new Button("Order Service");
         myHistoryBtn = new Button("My Transaction History");
         myNotificationsBtn = new Button("Notifications");
         
-        // Receptionist Buttons
+        // Receptionist buttons
         pendingTransBtn = new Button("Pending Transactions");
         
         // Staff Buttons
         myTasksBtn = new Button("My Tasks");
         
         // Style all buttons to fill width
-        styleButton(homeBtn);
         styleButton(logoutBtn);
         styleButton(manageServiceBtn);
         styleButton(manageEmployeeBtn);
@@ -85,12 +89,11 @@ public class DashboardPage implements EventHandler<ActionEvent> {
         styleButton(pendingTransBtn);
         styleButton(myTasksBtn);
         
-        // Register Events
-        homeBtn.setOnAction(this);
+        // Register events
         logoutBtn.setOnAction(this);
         manageServiceBtn.setOnAction(this);
         manageEmployeeBtn.setOnAction(this);
-        viewTransBtn.setOnAction(this); // Register Event
+        viewTransBtn.setOnAction(this); 
         viewServicesBtn.setOnAction(this);
         myHistoryBtn.setOnAction(this);
         myNotificationsBtn.setOnAction(this);
@@ -114,41 +117,50 @@ public class DashboardPage implements EventHandler<ActionEvent> {
         sidebar.setPrefWidth(200);
         
         bp.setLeft(sidebar);
-        
-        // Set Default Center
-        Label homeLbl = new Label("Welcome to GoVlash Laundry System");
-        homeLbl.setStyle("-fx-font-size: 24px;");
-        bp.setCenter(homeLbl);
     }
     
     private void setupSidebarByRole() {
         sidebar.getChildren().clear();
         sidebar.getChildren().add(welcomeLbl);
         sidebar.getChildren().add(new Separator());
-        sidebar.getChildren().add(homeBtn);
         
         String role = currentUser.getRole();
         
         // DYNAMIC CONTENT BASED ON ROLE
         if (role.equals("Admin")) {
-            // Source 10, 14, 41: Admin manages services, employees, and views transactions
+            //Admin manages services, employees, and views transactions
             sidebar.getChildren().addAll(manageServiceBtn, manageEmployeeBtn, viewTransBtn);
             
         } else if (role.equals("Customer")) {
-            // Source 11, 36, 24: View services, history, notifications
+            // View services, history, notifications
             sidebar.getChildren().addAll(viewServicesBtn, myHistoryBtn, myNotificationsBtn);
             
         } else if (role.equals("Receptionist")) {
-            // Source 42: View pending transactions
+            // Viiew pending transactions
             sidebar.getChildren().add(pendingTransBtn);
             
         } else if (role.equals("Laundry Staff")) {
-            // Source 43: View assigned orders
+            // View assigned orders
             sidebar.getChildren().add(myTasksBtn);
         }
         
         sidebar.getChildren().add(new Separator());
         sidebar.getChildren().add(logoutBtn);
+    }
+    
+    // Helper method to decide which view to show user first
+    private void loadDefaultView() {
+        String role = currentUser.getRole();
+        
+        if (role.equals("Admin")) {
+            bp.setCenter(new ManageServiceView()); 
+        } else if (role.equals("Customer")) {
+            bp.setCenter(new BuyServiceView());
+        } else if (role.equals("Receptionist")) {
+            bp.setCenter(new ReceptionistView());
+        } else if (role.equals("Laundry Staff")) {
+            bp.setCenter(new LaundryStaffView());
+        }
     }
     
     public Scene getScene() {
@@ -161,11 +173,8 @@ public class DashboardPage implements EventHandler<ActionEvent> {
             UserSession.clear();
             Main.setScene(new LoginPage().getScene());
         } 
-        else if (e.getSource() == homeBtn) {
-            bp.setCenter(new Label("Home Page"));
-        }
         
-        // --- ADMIN VIEWS ---
+        // ADMIN VIEWS
         else if (e.getSource() == manageServiceBtn) {
             bp.setCenter(new ManageServiceView()); 
         }
@@ -173,11 +182,10 @@ public class DashboardPage implements EventHandler<ActionEvent> {
             bp.setCenter(new ManageEmployeeView());
         }
         else if (e.getSource() == viewTransBtn) {
-            // Link to AdminTransactionView (includes Send Notification)
             bp.setCenter(new AdminTransactionView());
         }
 
-        // --- CUSTOMER VIEWS ---
+        // CUSTOMER VIEWS
         else if (e.getSource() == viewServicesBtn) {
             bp.setCenter(new BuyServiceView());
         }
@@ -185,14 +193,14 @@ public class DashboardPage implements EventHandler<ActionEvent> {
             bp.setCenter(new CustomerHistoryView());
         }
         else if (e.getSource() == myNotificationsBtn) {
-            // Link to CustomerNotificationView (Read/Delete Notif)
             bp.setCenter(new CustomerNotificationView());
         }
         
-        // --- STAFF VIEWS ---
+        // RECEPTIONIST VIEWS
         else if (e.getSource() == pendingTransBtn) {
             bp.setCenter(new ReceptionistView());
         }
+        // STAFF VIEWS
         else if (e.getSource() == myTasksBtn) {
             bp.setCenter(new LaundryStaffView());
         }

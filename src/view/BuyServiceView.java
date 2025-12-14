@@ -34,16 +34,16 @@ public class BuyServiceView extends BorderPane implements EventHandler<ActionEve
     private TableView<Service> table;
     private Button orderServiceBtn; 
     
-    // Components for Order Form (Initially Hidden)
+    // Components for Order Form
     private VBox formLayout;
     private GridPane formGrid;
     private Label formTitleLbl;
     
-    // Service Details Labels in Form
+    // Service details labels in form
     private Label detailNameLbl, detailDescLbl, detailPriceLbl;
-    private Label valNameLbl, valDescLbl, valPriceLbl; // Values
+    private Label valNameLbl, valDescLbl, valPriceLbl; 
     
-    // Input Fields
+    // Input fields
     private Label weightLbl, noteLbl;
     private TextField weightField;
     private TextArea noteArea;
@@ -68,7 +68,7 @@ public class BuyServiceView extends BorderPane implements EventHandler<ActionEve
     private void initComp() {
         mainLayout = new VBox(20);
         
-        // --- MAIN VIEW COMPONENTS ---
+        // MAIN VIEW COMPONENTS
         titleLbl = new Label("Buy Laundry Service");
         titleLbl.setStyle("-fx-font-size: 24px; -fx-font-weight: bold;");
         
@@ -84,7 +84,7 @@ public class BuyServiceView extends BorderPane implements EventHandler<ActionEve
         orderServiceBtn.setStyle("-fx-background-color: #007bff; -fx-text-fill: white;");
         orderServiceBtn.setOnAction(this);
 
-        // --- FORM VIEW COMPONENTS ---
+        // FORM VIEW COMPONENTS
         formLayout = new VBox(20);
         formGrid = new GridPane();
         
@@ -146,12 +146,12 @@ public class BuyServiceView extends BorderPane implements EventHandler<ActionEve
     }
 
     private void initPos() {
-        // --- FORM GRID SETUP ---
+        // FORM GRID SETUP
         formGrid.setHgap(15);
         formGrid.setVgap(15);
         formGrid.setAlignment(Pos.CENTER);
         
-        // Service Details
+        // Service details
         formGrid.add(detailNameLbl, 0, 0);
         formGrid.add(valNameLbl, 1, 0);
         
@@ -161,7 +161,7 @@ public class BuyServiceView extends BorderPane implements EventHandler<ActionEve
         formGrid.add(detailPriceLbl, 0, 2);
         formGrid.add(valPriceLbl, 1, 2);
         
-        // Input Fields
+        // Input fields
         formGrid.add(weightLbl, 0, 3);
         formGrid.add(weightField, 1, 3);
         
@@ -177,16 +177,16 @@ public class BuyServiceView extends BorderPane implements EventHandler<ActionEve
         formLayout.setAlignment(Pos.CENTER);
         formLayout.setPadding(new Insets(20));
         
-        // --- MAIN LAYOUT SETUP ---
+        // MAIN LAYOUT SETUP
         mainLayout.setPadding(new Insets(20));
         mainLayout.setAlignment(Pos.CENTER);
         
-        // Add both views to main layout, but we will toggle visibility
+        // Add both views to main layout
         mainLayout.getChildren().addAll(titleLbl, noServiceLbl, table, orderServiceBtn, formLayout);
 
         this.setCenter(mainLayout);
         
-        // Initial State: Show Table, Hide Form
+        // Show table but hide form
         showTableMode(true); 
     }
 
@@ -209,17 +209,16 @@ public class BuyServiceView extends BorderPane implements EventHandler<ActionEve
 
     // Helper to toggle between Table View and Form View
     private void showTableMode(boolean showTable) {
-        // Table Components
+        // Table components
         titleLbl.setVisible(showTable);
         table.setVisible(showTable);
         orderServiceBtn.setVisible(showTable);
         
-        // Form Components
-        // Note: formLayout takes up space in VBox, so we use managed property to collapse it completely
+        // Form components
         formLayout.setVisible(!showTable);
         formLayout.setManaged(!showTable); 
         
-        // Table managed property (to remove gap when hidden)
+        // Table managed property
         table.setManaged(showTable);
         orderServiceBtn.setManaged(showTable);
         titleLbl.setManaged(showTable);
@@ -248,16 +247,16 @@ public class BuyServiceView extends BorderPane implements EventHandler<ActionEve
         
         selectedService = selection;
         
-        // Populate Form Labels
+        // Populate form labels
         valNameLbl.setText(selectedService.getServiceName());
         valDescLbl.setText(selectedService.getServiceDesc());
         valPriceLbl.setText("Rp. " + selectedService.getServicePrice());
         
-        // Clear Inputs
+        // Clear inputs
         weightField.clear();
         noteArea.clear();
         
-        // Switch View
+        // Switch view
         showTableMode(false);
     }
 
@@ -275,7 +274,7 @@ public class BuyServiceView extends BorderPane implements EventHandler<ActionEve
             alert.setContentText("Order Placed Successfully!");
             alert.showAndWait();
             
-            // Return to Table View
+            // Return to table view
             table.getSelectionModel().clearSelection();
             selectedService = null;
             showTableMode(true);

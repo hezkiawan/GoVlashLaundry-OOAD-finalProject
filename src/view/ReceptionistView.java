@@ -40,24 +40,24 @@ public class ReceptionistView extends BorderPane implements EventHandler<ActionE
     private Button openAssignBtn;
     
     // Filter Components
-    private ToggleButton showUnassignedBtn, showAllBtn; // Renamed variable for clarity
+    private ToggleButton showUnassignedBtn, showAllBtn; 
     private ToggleGroup filterGroup;
 
-    // --- FORM VIEW COMPONENTS ---
+    // Form components
     private VBox formLayout;
     private GridPane formGrid;
     private Label formTitleLbl;
     
-    // Form Details Labels (Read-Only)
+    // Form detailes lables
     private Label detIdLbl, detCustLbl, detServLbl, detDateLbl, detStatusLbl, detWeightLbl, detPriceLbl;
     private Label valIdLbl, valCustLbl, valServLbl, valDateLbl, valStatusLbl, valWeightLbl, valPriceLbl;
     
-    // Form Input
+    // Form input
     private Label assignToLbl;
     private ComboBox<Employee> staffCombo;
     private Button confirmBtn, cancelBtn;
 
-    // --- CONTROLLERS & DATA ---
+    // Controller
     private TransactionController trController = new TransactionController();
     private UserController userController = new UserController();
     
@@ -72,11 +72,11 @@ public class ReceptionistView extends BorderPane implements EventHandler<ActionE
     }
 
     private void initComp() {
-        // --- 1. TABLE COMPONENTS ---
+        // Table components
         titleLbl = new Label("Transaction Management");
         titleLbl.setStyle("-fx-font-size: 24px; -fx-font-weight: bold;");
 
-        // Filter Toggles
+        // Filter toggles
         showUnassignedBtn = new ToggleButton("Show Unassigned");
         showAllBtn = new ToggleButton("Show All Transactions");
         filterGroup = new ToggleGroup();
@@ -95,11 +95,11 @@ public class ReceptionistView extends BorderPane implements EventHandler<ActionE
         openAssignBtn.setStyle("-fx-background-color: #007bff; -fx-text-fill: white;");
         openAssignBtn.setOnAction(this);
 
-        // --- 2. FORM COMPONENTS ---
+        // Form components
         formTitleLbl = new Label("Assign Order to Staff");
         formTitleLbl.setStyle("-fx-font-size: 20px; -fx-font-weight: bold;");
         
-        // Labels for static details
+        // Labels for details
         detIdLbl = new Label("Order ID:");
         detCustLbl = new Label("Customer Name:");
         detServLbl = new Label("Service Name:");
@@ -132,7 +132,7 @@ public class ReceptionistView extends BorderPane implements EventHandler<ActionE
 
         alert = new Alert(AlertType.NONE);
         
-        // --- LAYOUT CONTAINERS ---
+        // Containers
         mainLayout = new VBox(20);
         formLayout = new VBox(20);
         formGrid = new GridPane();
@@ -154,7 +154,7 @@ public class ReceptionistView extends BorderPane implements EventHandler<ActionE
         TableColumn<Transaction, Date> dateCol = new TableColumn<>("Date");
         dateCol.setCellValueFactory(new PropertyValueFactory<>("transactionDate"));
         
-        // Staff Name Column
+        // Staff name column
         TableColumn<Transaction, String> staffCol = new TableColumn<>("Staff Name");
         staffCol.setCellValueFactory(new PropertyValueFactory<>("laundryStaffName"));
         staffCol.setMinWidth(120);
@@ -168,7 +168,6 @@ public class ReceptionistView extends BorderPane implements EventHandler<ActionE
         TableColumn<Transaction, Integer> priceCol = new TableColumn<>("Total Price");
         priceCol.setCellValueFactory(new PropertyValueFactory<>("totalPrice"));
         
-        // Add Safe (No varargs warning)
         table.getColumns().add(idCol);
         table.getColumns().add(custCol);
         table.getColumns().add(servCol);
@@ -180,12 +179,11 @@ public class ReceptionistView extends BorderPane implements EventHandler<ActionE
     }
 
     private void initPos() {
-        // --- FORM LAYOUT SETUP ---
+        // Form layout 
         formGrid.setHgap(15);
         formGrid.setVgap(10);
         formGrid.setAlignment(Pos.CENTER);
         
-        // Row 0-6: Details
         formGrid.add(detIdLbl, 0, 0); formGrid.add(valIdLbl, 1, 0);
         formGrid.add(detCustLbl, 0, 1); formGrid.add(valCustLbl, 1, 1);
         formGrid.add(detServLbl, 0, 2); formGrid.add(valServLbl, 1, 2);
@@ -194,10 +192,8 @@ public class ReceptionistView extends BorderPane implements EventHandler<ActionE
         formGrid.add(detWeightLbl, 0, 5); formGrid.add(valWeightLbl, 1, 5);
         formGrid.add(detPriceLbl, 0, 6); formGrid.add(valPriceLbl, 1, 6);
         
-        // Row 7: Spacer
         formGrid.add(new Label(""), 0, 7); 
         
-        // Row 8: Input
         formGrid.add(assignToLbl, 0, 8);
         formGrid.add(staffCombo, 1, 8);
         
@@ -209,24 +205,24 @@ public class ReceptionistView extends BorderPane implements EventHandler<ActionE
         formLayout.setAlignment(Pos.CENTER);
         formLayout.setPadding(new Insets(20));
 
-        // --- MAIN LAYOUT SETUP ---
+        // Main layout
         HBox filterBox = new HBox(10);
         filterBox.setAlignment(Pos.CENTER);
         filterBox.getChildren().addAll(new Label("Filter:"), showUnassignedBtn, showAllBtn);
         
-        // Add BOTH layouts to VBox (we toggle visibility)
+        // Add layouts to VBox
         mainLayout.getChildren().addAll(titleLbl, filterBox, table, openAssignBtn, formLayout);
         mainLayout.setAlignment(Pos.CENTER);
         mainLayout.setPadding(new Insets(20));
         
         this.setCenter(mainLayout);
         
-        // Start in Table Mode
+        // Start in table mode
         showTableMode(true);
     }
 
     private void showTableMode(boolean showTable) {
-        // Table Components
+        // Table components
         titleLbl.setVisible(showTable);
         showUnassignedBtn.getParent().setVisible(showTable); // Hide Filter Box
         table.setVisible(showTable);
@@ -238,13 +234,13 @@ public class ReceptionistView extends BorderPane implements EventHandler<ActionE
         table.setManaged(showTable);
         openAssignBtn.setManaged(showTable);
         
-        // Form Components
+        // Form components
         formLayout.setVisible(!showTable);
         formLayout.setManaged(!showTable);
     }
 
     private void loadData() {
-        // 1. Fetch ALL transactions (So we can filter locally)
+        // 1. Fetch all transactions
         allTransactions = trController.getAllTransactions(); 
         applyFilter();
 
@@ -259,14 +255,13 @@ public class ReceptionistView extends BorderPane implements EventHandler<ActionE
         }
     }
     
-    // THIS IS THE KEY UPDATE
     private void applyFilter() {
         if (allTransactions == null) return;
 
         ObservableList<Transaction> trObs;
-        
+   
         if (showUnassignedBtn.isSelected()) {
-            // New Requirement: "Unassigned" means laundryStaff is null (0)
+            // Unassigned" ==  laundryStaff is 0
             Vector<Transaction> unassigned = allTransactions.stream()
                 .filter(t -> t.getLaundryStaffId() == 0) 
                 .collect(Collectors.toCollection(Vector::new));
@@ -304,13 +299,13 @@ public class ReceptionistView extends BorderPane implements EventHandler<ActionE
             return;
         }
         
-        // Validation: Logic to ensure we don't re-assign finished tasks
+        // Validation to ensure no re-assigning finished tasks
         if (selectedTr.getTransactionStatus().equalsIgnoreCase("Finished")) {
              showAlert(AlertType.WARNING, "Cannot assign a finished transaction.");
              return;
         }
         
-        // Populate Form Labels using new Getters
+        // Fill form labels
         valIdLbl.setText(String.valueOf(selectedTr.getTransactionId()));
         valCustLbl.setText(selectedTr.getCustomerName());
         valServLbl.setText(selectedTr.getServiceName());
@@ -321,7 +316,7 @@ public class ReceptionistView extends BorderPane implements EventHandler<ActionE
         
         staffCombo.getSelectionModel().clearSelection();
         
-        // Switch View
+        // Switch view
         showTableMode(false);
     }
 
@@ -333,7 +328,7 @@ public class ReceptionistView extends BorderPane implements EventHandler<ActionE
             return;
         }
         
-        // IDs for update
+        // ID for update
         int trId = selectedTr.getTransactionId();
         int staffId = selectedStaff.getId();
         int receptionistId = UserSession.getInstance().getId();

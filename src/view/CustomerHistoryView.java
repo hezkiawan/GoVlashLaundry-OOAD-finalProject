@@ -41,11 +41,11 @@ public class CustomerHistoryView extends BorderPane {
         titleLbl.setStyle("-fx-font-size: 24px; -fx-font-weight: bold;");
         
         noDataLbl = new Label("No transactions found.");
-        noDataLbl.setVisible(false); // Hidden by default
+        noDataLbl.setVisible(false); 
 
-        // Table Setup
+        // Table setup
         table = new TableView<>();
-        table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY); // Auto-fit columns
+        table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY); 
         
         setupTableColumns();
     }
@@ -97,13 +97,13 @@ public class CustomerHistoryView extends BorderPane {
     }
 
     private void refreshTable() {
-        // 1. Get Current User ID
+        // 1. Get current user ID
         int userId = UserSession.getInstance().getId();
         
-        // 2. Fetch Data (DAO handles the "Descending Order" requirement)
+        // 2. Fetch data
         transactions = trController.getCustomerTransactions(userId);
         
-        // 3. Populate Table
+        // 3. Fill table
         if (transactions.isEmpty()) {
             table.setVisible(false);
             noDataLbl.setVisible(true);

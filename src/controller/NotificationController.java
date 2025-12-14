@@ -9,7 +9,6 @@ public class NotificationController {
 	private NotificationDAO noteDAO = new NotificationDAO();
 
     // SEND NOTIFICATION (Admin)
-    // Message is auto generated
     public String sendNotification(int recipientId) {
         if (recipientId == 0) return "Recipient Invalid.";
         
@@ -25,7 +24,6 @@ public class NotificationController {
     }
     
     // READ NOTIFICATION (Customer)
-    // isRead set to true when viewing detail
     public void markAsRead(int notificationId) {
         noteDAO.markAsRead(notificationId);
     }

@@ -27,14 +27,14 @@ import model.Service;
 
 public class ManageServiceView extends BorderPane implements EventHandler<ActionEvent> {
 
-	// --- MAIN VIEW COMPONENTS ---
+	// MAIN VIEW COMPONENTS
     private VBox mainLayout;
     private Label titleLbl;
     private TableView<Service> table;
     private Button addBtn, updateBtn, deleteBtn;
     private HBox mainBtnBox;
 
-    // --- FORM VIEW COMPONENTS ---
+    // FORM VIEW COMPONENTS
     private VBox formLayout;
     private GridPane formGrid;
     private Label formTitleLbl;
@@ -42,13 +42,13 @@ public class ManageServiceView extends BorderPane implements EventHandler<Action
     private TextArea descField;
     private Button saveBtn, cancelBtn;
 
-    // --- SHARED ---
+    // Alert, controller, and services 
     private Alert alert;
     private ServiceController serviceController = new ServiceController();
     private Vector<Service> services;
     
-    // State Tracking
-    private Service serviceToUpdate = null; // Null = Add Mode, Object = Update Mode
+    // State Tracking -> which service to be updated
+    private Service serviceToUpdate = null; 
 
     public ManageServiceView() {
         initComp();
@@ -57,7 +57,7 @@ public class ManageServiceView extends BorderPane implements EventHandler<Action
     }
 
     private void initComp() {
-        // --- 1. TABLE VIEW SETUP ---
+        // TABLE VIEW SETUP
         titleLbl = new Label("Manage Laundry Services");
         titleLbl.setStyle("-fx-font-size: 24px; -fx-font-weight: bold;");
 
@@ -77,7 +77,7 @@ public class ManageServiceView extends BorderPane implements EventHandler<Action
         mainBtnBox.setAlignment(Pos.CENTER);
         mainBtnBox.getChildren().addAll(addBtn, updateBtn, deleteBtn);
 
-        // --- 2. FORM VIEW SETUP ---
+        // FORM VIEW SETUP
         formTitleLbl = new Label("Service Details"); // Will change dynamically
         formTitleLbl.setStyle("-fx-font-size: 20px; -fx-font-weight: bold;");
 
@@ -103,7 +103,7 @@ public class ManageServiceView extends BorderPane implements EventHandler<Action
         cancelBtn.setStyle("-fx-background-color: #f44336; -fx-text-fill: white;");
         cancelBtn.setOnAction(this);
 
-        // --- 3. LAYOUT CONTAINERS ---
+        // CONTAINERS
         mainLayout = new VBox(20);
         formLayout = new VBox(20);
         formGrid = new GridPane();
@@ -137,7 +137,7 @@ public class ManageServiceView extends BorderPane implements EventHandler<Action
     }
 
     private void initPos() {
-        // --- FORM LAYOUT CONSTRUCTION ---
+        // FORM
         formGrid.setHgap(15);
         formGrid.setVgap(15);
         formGrid.setAlignment(Pos.CENTER);
@@ -162,8 +162,7 @@ public class ManageServiceView extends BorderPane implements EventHandler<Action
         formLayout.setAlignment(Pos.CENTER);
         formLayout.setPadding(new Insets(20));
 
-        // --- MAIN LAYOUT CONSTRUCTION ---
-        // We add BOTH layouts to the VBox, but we will toggle their visibility/management
+        // MAIN LAYOUT
         mainLayout.getChildren().addAll(titleLbl, table, mainBtnBox, formLayout);
         mainLayout.setAlignment(Pos.CENTER);
         mainLayout.setPadding(new Insets(20));
@@ -174,7 +173,7 @@ public class ManageServiceView extends BorderPane implements EventHandler<Action
         showTableMode(true);
     }
 
-    // Toggle between Table and Form
+    // Switch between Table and Form
     private void showTableMode(boolean showTable) {
         // Table Components
         titleLbl.setVisible(showTable);
@@ -200,7 +199,7 @@ public class ManageServiceView extends BorderPane implements EventHandler<Action
     @Override
     public void handle(ActionEvent e) {
         if (e.getSource() == addBtn) {
-            openForm(null); // Add Mode
+            openForm(null); // Add mode
         } 
         else if (e.getSource() == updateBtn) {
             Service selected = table.getSelectionModel().getSelectedItem();
@@ -208,7 +207,7 @@ public class ManageServiceView extends BorderPane implements EventHandler<Action
                 showAlert(AlertType.ERROR, "Please select a service to update.");
                 return;
             }
-            openForm(selected); // Update Mode
+            openForm(selected); // Update mode
         } 
         else if (e.getSource() == deleteBtn) {
             handleDelete();
@@ -222,9 +221,9 @@ public class ManageServiceView extends BorderPane implements EventHandler<Action
         }
     }
 
-    // Prepares the form for either Add or Update
+    // Make the form for add or update
     private void openForm(Service s) {
-        this.serviceToUpdate = s; // Set state
+        this.serviceToUpdate = s; 
         
         if (s == null) {
             formTitleLbl.setText("Add New Service");

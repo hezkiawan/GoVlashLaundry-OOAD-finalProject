@@ -36,7 +36,7 @@ public class UserDAO {
                 String role = rs.getString("UserRole");
                 String pw = rs.getString("UserPassword");
 
-                // Instantiate the correct subclass based on the role string
+                // Make the correct subclass based role
                 if(role.equals("Admin")) {
                     user = new Admin(id, name, email, pw, gender, dob);
                 } else if(role.equals("Customer")) {
@@ -53,9 +53,8 @@ public class UserDAO {
         return user;
     }
 
-    // REGISTER METHOD (For Customers & Employees)
+    // REGISTER METHOD
     public boolean register(User user) {
-        // We use user.getRole() which is populated by the Subclass constructor
         String query = "INSERT INTO ms_user (UserName, UserEmail, UserPassword, UserGender, UserDOB, UserRole) VALUES (?, ?, ?, ?, ?, ?)";
         PreparedStatement ps = connect.prepareStatement(query);
         
@@ -67,7 +66,7 @@ public class UserDAO {
             ps.setString(3, user.getPassword());
             ps.setString(4, user.getGender());
             ps.setDate(5, user.getDob());
-            ps.setString(6, user.getRole()); // [cite: 28, 33]
+            ps.setString(6, user.getRole());
             
             int result = ps.executeUpdate();
             return result > 0;
@@ -124,7 +123,7 @@ public class UserDAO {
             ResultSet rs = ps.executeQuery();
             return rs.next();
         } catch (Exception e) {
-            return true; // assume exists to avoid duplicates
+            return true; 
         }
     }
 }

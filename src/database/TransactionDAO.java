@@ -10,11 +10,11 @@ import model.Transaction;
 public class TransactionDAO {
 	private Connect connect = Connect.getInstance();
 
-    // Helper to map DB row to Object
+    // Helper to map DB row to Object so its easy to add to vector
     private Transaction mapResultSet(ResultSet rs) throws SQLException {
     	
     	int weight = rs.getInt("TotalWeight");
-        int pricePerKg = rs.getInt("ServicePrice"); // Fetched via JOIN
+        int pricePerKg = rs.getInt("ServicePrice"); 
         int total = weight * pricePerKg;
         
         return new Transaction(
@@ -40,11 +40,11 @@ public class TransactionDAO {
             "u.UserName AS CustomerName, " +
             "s.ServiceName, " +
             "s.ServicePrice, " +
-            "st.UserName AS StaffName " + // <--- Select Staff Name
+            "st.UserName AS StaffName " + 
             "FROM tr_transaction t " +
             "JOIN ms_user u ON t.CustomerId = u.UserId " +
             "JOIN ms_service s ON t.ServiceId = s.ServiceId " +
-            "LEFT JOIN ms_user st ON t.LaundryStaffId = st.UserId "; // <--- Join for Staff
+            "LEFT JOIN ms_user st ON t.LaundryStaffId = st.UserId "; 
     // VIEW ALL (For Admin)
     public Vector<Transaction> getAllTransactions() {
         Vector<Transaction> trList = new Vector<>();

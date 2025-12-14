@@ -12,7 +12,7 @@ public class Connect {
     private final String USERNAME = "root";
     private final String PASSWORD = "";
     private final String DATABASE = "govlash_laundry"; //name of the database
-    private final String HOST = "localhost:3306"; //use the port (in xampp)
+    private final String HOST = "localhost:3306"; 
     private final String CONNECT = String.format("jdbc:mysql://%s/%s", HOST, DATABASE);
     
     private Connection con;
@@ -31,8 +31,8 @@ public class Connect {
     
     private Connect() {
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver"); //return sebuah object dr com.mysql.cj.jdbc.Driver
-            con = DriverManager.getConnection(CONNECT, USERNAME, PASSWORD); //establish connection
+            Class.forName("com.mysql.cj.jdbc.Driver"); 
+            con = DriverManager.getConnection(CONNECT, USERNAME, PASSWORD); //Establish connection
             st = con.createStatement(); //create Statement object
         } catch (Exception e) {
             // TODO Auto-generated catch block

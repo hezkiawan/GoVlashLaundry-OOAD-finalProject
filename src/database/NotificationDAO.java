@@ -10,7 +10,7 @@ import model.Notification;
 public class NotificationDAO {
 	private Connect connect = Connect.getInstance();
 
-    // CREATE (Auto-generated when Admin sends)
+    // CREATE NOTIFICATION WHEN ADMIN SEND NOTI
     public void createNotification(int recipientId, String message) {
         String query = "INSERT INTO tr_notification (RecipientId, NotificationMessage, CreatedAt, IsRead) VALUES (?, ?, NOW(), 0)";
         PreparedStatement ps = connect.prepareStatement(query);
@@ -22,7 +22,7 @@ public class NotificationDAO {
         } catch (SQLException e) { e.printStackTrace(); }
     }
 
-    // VIEW BY RECIPIENT (Customer)
+    // VIEW FOR CUSTOMER
     public Vector<Notification> getNotifications(int recipientId) {
         Vector<Notification> notes = new Vector<>();
         String query = "SELECT * FROM tr_notification WHERE RecipientId = ? ORDER BY CreatedAt DESC";

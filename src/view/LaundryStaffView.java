@@ -108,16 +108,15 @@ public class LaundryStaffView extends BorderPane implements EventHandler<ActionE
     }
 
     private void loadData() {
-        // 1. Get Current Staff ID
+        // 1. Get current staff id
         int staffId = UserSession.getInstance().getId();
         
-        // 2. Fetch Assigned Pending Tasks
-        // (Controller calls DAO to filter by LaundryStaffId = ? AND Status = 'Pending')
+        // 2. Fetch assigned pending tasks
         myTasks = trController.getStaffTasks(staffId);
         
         if (myTasks.isEmpty()) {
             table.setVisible(false);
-            completeBtn.setVisible(false); // Hide button if no work
+            completeBtn.setVisible(false); // Hide button if no tasks
             noDataLbl.setVisible(true);
         } else {
             table.setVisible(true);
@@ -146,7 +145,7 @@ public class LaundryStaffView extends BorderPane implements EventHandler<ActionE
             return;
         }
         
-        // Source 43: Mark them as finished
+        // Mark as finished
         trController.completeOrder(selectedTr.getTransactionId());
         
         // Success Message

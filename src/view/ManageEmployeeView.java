@@ -65,7 +65,7 @@ public class ManageEmployeeView extends BorderPane implements EventHandler<Actio
         titleLbl = new Label("Manage Employees");
         titleLbl.setStyle("-fx-font-size: 24px; -fx-font-weight: bold;");
 
-        // Form Labels
+        // Form labels
         nameLbl = new Label("Name:");
         emailLbl = new Label("Email:");
         passLbl = new Label("Password:");
@@ -74,7 +74,7 @@ public class ManageEmployeeView extends BorderPane implements EventHandler<Actio
         dobLbl = new Label("Date of Birth:");
         roleLbl = new Label("Role:");
 
-        // Form Inputs
+        // Form inputs
         nameField = new TextField();
         emailField = new TextField();
         emailField.setPromptText("must end with @govlash.com");
@@ -87,11 +87,11 @@ public class ManageEmployeeView extends BorderPane implements EventHandler<Actio
         genderGroup = new ToggleGroup();
         maleRb.setToggleGroup(genderGroup);
         femaleRb.setToggleGroup(genderGroup);
-        maleRb.setSelected(true); // Default
+        maleRb.setSelected(true);
         
         dobPicker = new DatePicker();
         
-        // Role Combo
+        // Role combo
         roleCombo = new ComboBox<>();
         roleCombo.getItems().addAll("Laundry Staff", "Receptionist");
         roleCombo.getSelectionModel().selectFirst();
@@ -105,7 +105,7 @@ public class ManageEmployeeView extends BorderPane implements EventHandler<Actio
 
         alert = new Alert(AlertType.NONE);
 
-        // Table Setup
+        // Table setup
         table = new TableView<>();
         setupTableColumns();
     }
@@ -140,7 +140,7 @@ public class ManageEmployeeView extends BorderPane implements EventHandler<Actio
     }
 
     private void initPos() {
-        // Form Layout
+        // Form layout
         formGrid.setHgap(10);
         formGrid.setVgap(10);
         formGrid.setAlignment(Pos.CENTER);
@@ -168,12 +168,12 @@ public class ManageEmployeeView extends BorderPane implements EventHandler<Actio
         formGrid.add(roleLbl, 0, 6);
         formGrid.add(roleCombo, 1, 6);
 
-        // Button Layout
+        // Button layout
         HBox btnBox = new HBox(10);
         btnBox.setAlignment(Pos.CENTER);
         btnBox.getChildren().addAll(addBtn, clearBtn);
 
-        // Main Layout
+        // Main layout
         mainLayout.setPadding(new Insets(20));
         mainLayout.setAlignment(Pos.CENTER);
         mainLayout.getChildren().addAll(titleLbl, table, formGrid, btnBox);
@@ -182,7 +182,7 @@ public class ManageEmployeeView extends BorderPane implements EventHandler<Actio
     }
 
     private void refreshTable() {
-        // Source 14: View all employees
+        // View all employees
         employees = userController.getAllEmployees();
         ObservableList<Employee> empObs = FXCollections.observableArrayList(employees);
         table.setItems(empObs);
@@ -209,7 +209,7 @@ public class ManageEmployeeView extends BorderPane implements EventHandler<Actio
     }
     
     private void handleAdd() {
-        // Gather Data
+        // Get data
         String name = nameField.getText();
         String email = emailField.getText();
         String pass = passField.getText();
@@ -220,7 +220,7 @@ public class ManageEmployeeView extends BorderPane implements EventHandler<Actio
         String gender = maleRb.isSelected() ? "Male" : "Female";
         
         // Call Controller
-        // Source 14: Admin adds new employees
+        // Admin adds new employees
         String result = userController.register(name, email, pass, confPass, gender, dob, role);
         
         if (result.equals("Success")) {

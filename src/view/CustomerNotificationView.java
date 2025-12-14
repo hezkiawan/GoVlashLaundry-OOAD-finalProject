@@ -50,19 +50,19 @@ public class CustomerNotificationView extends BorderPane implements EventHandler
         titleLbl = new Label("My Notifications");
         titleLbl.setStyle("-fx-font-size: 24px; -fx-font-weight: bold;");
 
-        // Table Setup
+        // Table setup
         table = new TableView<>();
         table.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
         setupTableColumns();
 
-        // LISTENER: View Detail & Mark as Read logic 
+        // LISTENER: view detail & mark as reead logic 
         table.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
             if (newVal != null) {
                 handleSelection(newVal);
             }
         });
 
-        // Detail Area
+        // Detail area
         detailLbl = new Label("Message Detail:");
         messageDetailArea = new TextArea();
         messageDetailArea.setEditable(false);
@@ -70,7 +70,7 @@ public class CustomerNotificationView extends BorderPane implements EventHandler
         messageDetailArea.setPrefHeight(100);
         messageDetailArea.setPromptText("Select a notification to view details.");
 
-        // Delete Button 
+        // Delete button 
         deleteBtn = new Button("Delete Notification");
         deleteBtn.setStyle("-fx-background-color: #ff4444; -fx-text-fill: white;");
         deleteBtn.setOnAction(this);
@@ -79,27 +79,25 @@ public class CustomerNotificationView extends BorderPane implements EventHandler
     }
 
     private void setupTableColumns() {
-        // ID Column
+        // ID column
         TableColumn<Notification, Integer> idCol = new TableColumn<>("ID");
         idCol.setCellValueFactory(new PropertyValueFactory<>("id"));
         idCol.setMinWidth(50);
         
-        // Time Column
+        // Time column
         TableColumn<Notification, Timestamp> timeCol = new TableColumn<>("Date Received");
         timeCol.setCellValueFactory(new PropertyValueFactory<>("createdAt"));
         timeCol.setMinWidth(150);
         
-        // Message Preview Column
+        // Message Preview column
         TableColumn<Notification, String> msgCol = new TableColumn<>("Message Preview");
         msgCol.setCellValueFactory(new PropertyValueFactory<>("message"));
         msgCol.setMinWidth(300);
         
-        // Read Status Column (Source 26)
+        // Read Status column
         TableColumn<Notification, Boolean> readCol = new TableColumn<>("Read");
         readCol.setCellValueFactory(new PropertyValueFactory<>("isRead"));
-        
-//        table.getColumns().addAll(idCol, timeCol, msgCol, readCol);
-        
+                
         table.getColumns().add(idCol);
         table.getColumns().add(timeCol);
         table.getColumns().add(msgCol);
@@ -110,7 +108,7 @@ public class CustomerNotificationView extends BorderPane implements EventHandler
         mainLayout.setPadding(new Insets(20));
         mainLayout.setAlignment(Pos.CENTER);
         
-        // Layout: Title -> Table -> Label -> TextArea -> Delete Button
+        // Layout
         mainLayout.getChildren().addAll(titleLbl, table, detailLbl, messageDetailArea, deleteBtn);
         
         this.setCenter(mainLayout);
@@ -124,7 +122,7 @@ public class CustomerNotificationView extends BorderPane implements EventHandler
         table.setItems(noteObs);
     }
 
-    // Handle viewing details and marking as read
+    // Handle view details and mark as read
     private void handleSelection(Notification n) {
         // 1. Show Detail
         messageDetailArea.setText(n.getMessage());
@@ -133,8 +131,6 @@ public class CustomerNotificationView extends BorderPane implements EventHandler
         if (!n.isRead()) {
             noteController.markAsRead(n.getId());
             // We reload data to show the updated "true" status in the table
-            // However, to keep the selection active, we just update the list if possible, 
-            // or simple reload (which might deselect). Simple reload is safer for data consistency.
             loadData();
         }
     }
@@ -156,7 +152,7 @@ public class CustomerNotificationView extends BorderPane implements EventHandler
             return;
         }
         
-        // Call Controller to Delete 
+        // Call controller to delete 
         noteController.deleteNotification(selected.getId());
         
         alert.setAlertType(AlertType.INFORMATION);

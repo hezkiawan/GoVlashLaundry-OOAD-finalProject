@@ -38,8 +38,8 @@ public class ServiceDAO {
             ps.setString(2, s.getServiceDesc());
             ps.setInt(3, s.getServicePrice());
             ps.setInt(4, s.getServiceDuration());
-            int rows = ps.executeUpdate(); //returns number of affected rows
-            return rows > 0;                 // true = success, false = failed
+            int rows = ps.executeUpdate(); 
+            return rows > 0; 
         } catch (SQLException e) { 
         	e.printStackTrace(); 
         	return false;
@@ -56,7 +56,7 @@ public class ServiceDAO {
             ps.setInt(3, s.getServicePrice());
             ps.setInt(4, s.getServiceDuration());
             ps.setInt(5, s.getServiceId());
-            int rows = ps.executeUpdate();   // number of rows updated
+            int rows = ps.executeUpdate();  
             return rows > 0;
         } catch (SQLException e) { 
         	e.printStackTrace(); 
@@ -70,7 +70,7 @@ public class ServiceDAO {
         try {
             if (ps == null) return false;
             ps.setInt(1, id);
-            int rows = ps.executeUpdate();  // returns number of rows deleted
+            int rows = ps.executeUpdate();
             return rows > 0;
         } catch (SQLException e) { 
         	e.printStackTrace(); 

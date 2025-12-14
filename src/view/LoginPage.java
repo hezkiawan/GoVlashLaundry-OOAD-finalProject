@@ -45,7 +45,7 @@ public class LoginPage implements EventHandler<ActionEvent> {
     private void initComp() {
         bp = new BorderPane();
         grid = new GridPane();
-        mainLayout = new VBox(20); // Spacing 20
+        mainLayout = new VBox(20);
         
         // Labels
         titleLbl = new Label("GoVlash Laundry Login");
@@ -68,7 +68,7 @@ public class LoginPage implements EventHandler<ActionEvent> {
         
         registerBtn = new Button("Register New Account");
         registerBtn.setStyle("-fx-background-color: transparent; -fx-text-fill: blue; -fx-underline: true;");
-        registerBtn.setOnAction(this); // Register Event
+        registerBtn.setOnAction(this); 
         
         // Alert
         errorAlert = new Alert(AlertType.ERROR);
@@ -91,7 +91,7 @@ public class LoginPage implements EventHandler<ActionEvent> {
         grid.add(passLbl, 0, 1);
         grid.add(passField, 1, 1);
         
-        // Add Grid and Buttons to Main VBox
+        // Add grid and buttons to main VBox
         mainLayout.setAlignment(Pos.CENTER);
         mainLayout.getChildren().addAll(titleLbl, grid, loginBtn, registerBtn);
         
@@ -107,7 +107,7 @@ public class LoginPage implements EventHandler<ActionEvent> {
         if (e.getSource() == loginBtn) {
             handleLogin();
         } else if (e.getSource() == registerBtn) {
-            // Navigate to Register Page
+            // Navigate to register page
             Main.setScene(new RegisterPage().getScene());
         }
     }
@@ -116,19 +116,19 @@ public class LoginPage implements EventHandler<ActionEvent> {
         String email = emailField.getText();
         String pass = passField.getText();
         
-        // 1. Call Controller
+        // 1. Call controller
         User user = userController.login(email, pass);
         
         if (user != null) {
-            // 2. Success: Save Session
+            // 2. Success: save session
             UserSession.setInstance(user);
             
-            // 3. Navigate to Dashboard 
-            // make  DashboardPage, which checks UserSession to build the sidebar
+            // 3. Navigate to dashboard 
+            // make  DashboardPage that checks UserSession to build the sidebar
             Main.setScene(new DashboardPage().getScene()); 
             
         } else {
-            // 4. Failed
+            // 4. Fail
             errorAlert.setContentText("Invalid Email or Password");
             errorAlert.show();
         }

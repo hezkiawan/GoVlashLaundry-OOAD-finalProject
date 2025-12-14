@@ -15,15 +15,15 @@ public class ServiceController {
     // Validate and Insert/Update 
     public String saveService(String idStr, String name, String desc, String priceStr, String durationStr, boolean isUpdate) {
         
-        // 1. Validate Name (Source 12: Cannot be empty, <= 50 chars)
+        // 1. Validate Name (Cannot be empty, <= 50 chars)
         if (name.isEmpty()) return "Service Name cannot be empty.";
         if (name.length() > 50) return "Service Name must be <= 50 characters.";
 
-        // 2. Validate Description (Source 12: Cannot be empty, <= 250 chars)
+        // 2. Validate Description (Cannot be empty, <= 250 chars)
         if (desc.isEmpty()) return "Description cannot be empty.";
         if (desc.length() > 250) return "Description must be <= 250 characters.";
 
-        // 3. Validate Price (Source 12: Must be > 0)
+        // 3. Validate Price (ust be > 0)
         int price = 0;
         try {
             price = Integer.parseInt(priceStr);
@@ -32,7 +32,7 @@ public class ServiceController {
         }
         if (price <= 0) return "Price must be greater than 0.";
 
-        // 4. Validate Duration (Source 12: Between 1 and 30 days)
+        // 4. Validate Duration (Between 1 and 30 days)
         int duration = 0;
         try {
             duration = Integer.parseInt(durationStr);

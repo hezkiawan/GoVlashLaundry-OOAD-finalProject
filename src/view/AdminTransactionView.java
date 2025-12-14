@@ -33,10 +33,10 @@ public class AdminTransactionView extends BorderPane implements EventHandler<Act
     private Label titleLbl;
     private TableView<Transaction> table;
     
-    // Buttons for Actions
+    // Buttons 
     private Button sendNotifBtn;
     
-    // Toggle Buttons for Filtering (Source 41)
+    // Filtering with toggle buttons
     private ToggleButton showAllBtn, showFinishedBtn;
     private ToggleGroup filterGroup;
 
@@ -52,30 +52,29 @@ public class AdminTransactionView extends BorderPane implements EventHandler<Act
     public AdminTransactionView() {
         initComp();
         initPos();
-        loadData(); // Load initial data
+        loadData(); 
     }
 
     private void initComp() {
-        mainLayout = new VBox(20); // Vertical spacing of 20px
+        mainLayout = new VBox(20); 
         
         titleLbl = new Label("All Transactions Management");
         titleLbl.setStyle("-fx-font-size: 24px; -fx-font-weight: bold;");
 
-        // Initialize Table
+        // Initialize table
         table = new TableView<>();
         setupTableColumns();
 
-        // Initialize Action Button
-        // Source 22: Admin sends notification
+        // Initialize button to send notification
         sendNotifBtn = new Button("Send Completion Notification");
         sendNotifBtn.setStyle("-fx-background-color: #007bff; -fx-text-fill: white; -fx-font-size: 14px;");
         sendNotifBtn.setOnAction(this);
 
-        // Initialize Filter Buttons (Source 41: "filter to view only finished transactions")
+        // Initialize gilter Buttons 
         showAllBtn = new ToggleButton("Show All");
         showFinishedBtn = new ToggleButton("Show Finished Only");
         
-        // Group them so only one is active at a time
+        // Group toggle button so only one is active at a time
         filterGroup = new ToggleGroup();
         showAllBtn.setToggleGroup(filterGroup);
         showFinishedBtn.setToggleGroup(filterGroup);
@@ -114,9 +113,7 @@ public class AdminTransactionView extends BorderPane implements EventHandler<Act
         
         TableColumn<Transaction, Integer> priceCol = new TableColumn<>("Total Price");
         priceCol.setCellValueFactory(new PropertyValueFactory<>("totalPrice"));
-        
-//        table.getColumns().addAll(idCol, custCol, serviceCol, dateCol, statusCol, weightCol);
-        
+                
         table.getColumns().add(idCol);
         table.getColumns().add(custCol);
         table.getColumns().add(servCol);
@@ -142,11 +139,10 @@ public class AdminTransactionView extends BorderPane implements EventHandler<Act
     }
 
     private void loadData() {
-        // Source 41: View all transactions
-        // Source 44: Descending order (Handled in DAO)
+        // View all transactions
         allTransactions = trController.getAllTransactions();
         
-        // Apply current filter
+        // Apply filter
         applyFilter();
     }
     
@@ -180,25 +176,22 @@ public class AdminTransactionView extends BorderPane implements EventHandler<Act
     private void handleSendNotification() {
         Transaction selectedTr = table.getSelectionModel().getSelectedItem();
 
-        // Validation 1: Must select a row
+        // Validation 1 admin must select a row
         if (selectedTr == null) {
             showAlert(AlertType.ERROR, "Please select a transaction first.");
             return;
         }
 
-        // Validation 2: Logic check based on Source 22 context
-        // "Admin sends notifications after a transaction is finished."
+        // Validation 2 only for finished transaction
         if (!selectedTr.getTransactionStatus().equalsIgnoreCase("Finished")) {
             showAlert(AlertType.WARNING, "You can only send notifications for 'Finished' orders.");
             return;
         }
 
-        // Execution: Call Notification Controller
-        // Source 26: Recipient ID refers to the Customer ID of the transaction
+        // Call notification controller
         int customerId = selectedTr.getCustomerId();
         
-        // Source 23: Message is auto-generated in the system (Controller/DAO level)
-        // Note: The sendNotification method in controller requires the Recipient ID.
+        // Send notification
         String result = notifController.sendNotification(customerId);
 
         if (result.equals("Success")) {

@@ -19,10 +19,10 @@ public class TransactionController {
     // CREATE TRANSACTION (Customer)
     public String createTransaction(int serviceId, int customerId, String weightStr, String notes) {
         
-        // 1. Validate Service ID (Source 45: Cannot be empty)
+        // 1. Validate Service ID (Cannot be empty)
         if (serviceId == 0) return "Please select a service.";
 
-        // 2. Validate Weight (Source 45: Must be between 2 and 50kg)
+        // 2. Validate Weight (Must be between 2 and 50kg)
         int weight = 0;
         try {
             weight = Integer.parseInt(weightStr);
@@ -31,22 +31,20 @@ public class TransactionController {
         }
         if (weight < 2 || weight > 50) return "Total Weight must be between 2 and 50 kg.";
 
-        // 3. Validate Notes (Source 48, 50: <= 250 characters)
-        // (Note: Null check handled by textfield usually returning empty string, but safety check added)
+        // 3. Validate Notes (less than or equal to 250 characters)
         if (notes != null && notes.length() > 250) {
             return "Notes must be <= 250 characters.";
         }
 
         // Create Object
-        // Status is 'Pending' by default in DB, Date is Now
+        // Status is pending by default in DB , Date is Now
         Transaction tr = new Transaction(0, serviceId, customerId, 0, 0, Date.valueOf(LocalDate.now()), "Pending", weight, notes);
         trDAO.createTransaction(tr);
 
         return "Success";
     }
 
-    // ASSIGN STAFF (Receptionist)
-    // Receptionist ID and Laundry Staff ID set here
+    // ASSIGN RECEPTIONIST
     public String assignStaff(int transactionId, int receptionistId, int staffId) {
         if (staffId == 0) return "Please select a Laundry Staff.";
         
@@ -55,7 +53,6 @@ public class TransactionController {
     }
 
     // COMPLETE ORDER (Laundry Staff)
-    // Changes status to "Finished"
     public void completeOrder(int transactionId) {
         trDAO.completeTransaction(transactionId);
     }
